@@ -1,0 +1,16 @@
+{
+    "clangd.path": "/home/tadej/projects/aoc-2024/cpp/.pixi/envs/default/bin/clangd",
+    "clangd.inactiveRegions.useBackgroundHighlight": false,
+    "clangd.arguments": [
+        "--compile-commands-dir=cpp/build/debug"
+    ],
+    "cmake.cmakePath": "/home/tadej/projects/aoc-2024/cpp/.pixi/envs/default/bin/cmake",
+    "cmake.configureOnOpen": false,
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "[go]": {
+        "editor.defaultFormatter": "golang.go"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    }
+}

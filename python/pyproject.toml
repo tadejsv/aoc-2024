@@ -1,0 +1,8 @@
+[tool.ruff]
+# Set the maximum line length to 79.
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "Q", "N", "ANN", "T20", "TID", "I"]
+ignore = ["T201"]

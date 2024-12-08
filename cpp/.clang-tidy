@@ -1,0 +1,7 @@
+Checks: clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cppcoreguidelines-*,clang-analyzer-*,modernize-*,readability-*,performance-*
+HeaderFilterRegex: '(utils/*|day*)'
+SystemHeaders: false
+CheckOptions:
+    bugprone-exception-escape.IgnoredExceptions: main,
+    readability-identifier-length.IgnoredParameterNames: "[x|y]"
+    readability-identifier-length.IgnoredVariableNames: "[x|y]"
