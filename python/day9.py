@@ -21,20 +21,20 @@ def day9a() -> None:
         spaces.append(Space(index, start, int(chr)))
         start += int(chr)
 
-    es_ind = 1
-    for i in range(len(spaces) - 1, -1, -2):
-        space = spaces[i]
-        while i > es_ind and space.length > 0:
-            empty = spaces[es_ind]
-            if empty.length > space.length:
-                space.start = empty.start
-                empty.start += space.length
-                empty.length -= space.length
+    empty_space_ind = 1
+    for file_ind in range(len(spaces) - 1, -1, -2):
+        file = spaces[file_ind]
+        while file_ind > empty_space_ind and file.length > 0:
+            empty = spaces[empty_space_ind]
+            if empty.length > file.length:
+                file.start = empty.start
+                empty.start += file.length
+                empty.length -= file.length
                 break
 
-            empty.index = space.index
-            space.length -= empty.length
-            es_ind += 2
+            empty.index = file.index
+            file.length -= empty.length
+            empty_space_ind += 2
 
     checksum = 0
     for space in spaces:

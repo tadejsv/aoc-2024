@@ -1,10 +1,12 @@
-package main
+package day2
 
 import (
 	"fmt"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/tadejsv/aoc-2024/utils"
 )
 
 func checkLine(numLine []int) int {
@@ -27,7 +29,7 @@ func checkLine(numLine []int) int {
 
 func Day2a() {
 	// read lines
-	lines, err := ReadLines("../inputs/day2.txt")
+	lines, err := utils.ReadLines("../inputs/day2.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}
@@ -60,7 +62,7 @@ func Day2a() {
 
 func Day2b() {
 	// read lines
-	lines, err := ReadLines("../inputs/day2.txt")
+	lines, err := utils.ReadLines("../inputs/day2.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}

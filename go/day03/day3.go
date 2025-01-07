@@ -1,13 +1,15 @@
-package main
+package day3
 
 import (
 	"fmt"
 	"regexp"
 	"strconv"
+
+	"github.com/tadejsv/aoc-2024/utils"
 )
 
 func Day3a() {
-	lines, err := ReadLines("../inputs/day3.txt")
+	lines, err := utils.ReadLines("../inputs/day3.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}
@@ -31,7 +33,7 @@ func Day3a() {
 }
 
 func Day3b() {
-	lines, err := ReadLines("../inputs/day3.txt")
+	lines, err := utils.ReadLines("../inputs/day3.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}

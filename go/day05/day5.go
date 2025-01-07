@@ -1,9 +1,11 @@
-package main
+package day5
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/tadejsv/aoc-2024/utils"
 )
 
 type IntSet = map[int]bool
@@ -20,7 +22,7 @@ func setIntersection(set1, set2 IntSet) IntSet {
 }
 
 func parseInput(fname string) (incoming, outgoing map[int]IntSet, updates [][]int) {
-	lines, err := ReadLines(fname)
+	lines, err := utils.ReadLines(fname)
 	if err != nil {
 		panic("Could not read lines")
 	}

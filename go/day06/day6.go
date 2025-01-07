@@ -1,6 +1,12 @@
-package main
+package day6
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/tadejsv/aoc-2024/utils"
+)
+
+type IntSet = map[int]bool
 
 type Direction int
 
@@ -14,7 +20,7 @@ const (
 var turn []Direction = []Direction{Down, Up, Right, Left}
 
 func getBoard(fname string) ([][]int, [2]int, Direction) {
-	lines, err := ReadLines(fname)
+	lines, err := utils.ReadLines(fname)
 	if err != nil {
 		panic("Could not read lines")
 	}

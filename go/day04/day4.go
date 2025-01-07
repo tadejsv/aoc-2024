@@ -1,6 +1,10 @@
-package main
+package day4
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/tadejsv/aoc-2024/utils"
+)
 
 func checkXmas(x, y, dx, dy int, lines []string) bool {
 	maxX, maxY := x+3*dx, y+3*dy
@@ -42,7 +46,7 @@ func checkMas(x, y, dx1, dy1, dx2, dy2 int, lines []string) bool {
 }
 
 func Day4a() {
-	lines, err := ReadLines("../inputs/day4.txt")
+	lines, err := utils.ReadLines("../inputs/day4.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}
@@ -73,7 +77,7 @@ func Day4a() {
 }
 
 func Day4b() {
-	lines, err := ReadLines("../inputs/day4.txt")
+	lines, err := utils.ReadLines("../inputs/day4.txt")
 	if err != nil {
 		panic("Could not read lines")
 	}
