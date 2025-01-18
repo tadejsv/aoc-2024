@@ -56,7 +56,9 @@ func solveExtra(m *Machine) int64 {
 			bMod += aPrime
 		}
 
-		if float64(costA)/float64(costB) > float64(m.aVals[0])/float64(m.bVals[0]) {
+		// Using cross-multiplication to avoid casting to float to compute
+		// ca / cb > a[0] / b[0]
+		if costA*m.bVals[0] > m.aVals[0]*costB {
 			bMax := m.pVals[0] / m.bVals[0]
 			B = aPrime*(bMax/aPrime) + bMod
 			if B > bMax {
