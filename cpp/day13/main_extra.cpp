@@ -70,7 +70,9 @@ solve(const Machine& machine) -> int64_t {
         }
 
         // Choose the maximum of the most cost-effective button
-        if (cost_a / cost_b > machine.a_vals[0] / machine.b_vals[0]) {
+        // Using cross-multiplication to avoid casting to float to compute
+        // ca / cb > a[0] / b[0]
+        if (cost_a * machine.b_vals[0] > cost_b * machine.a_vals[0]) {
             int64_t b_max{ machine.p_vals[0] / machine.b_vals[0] };
             b_solution = a1_prime * (b_max / a1_prime) + b_mod;
             if (b_solution > b_max) {
