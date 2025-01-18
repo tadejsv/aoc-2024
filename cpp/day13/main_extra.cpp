@@ -17,12 +17,12 @@ struct Machine {
 
 // Perform expanded euclidean algorithm to obtain gcd(a,b) and x and y from bezout's identity
 auto
-expanded_euclid(int64_t a, int64_t b) -> std::tuple<int64_t, int64_t, int64_t> {
+extended_euclid(int64_t a, int64_t b) -> std::tuple<int64_t, int64_t, int64_t> {
     if (b == 0) {
         return { a, 1, 0 };
     }
 
-    auto [gcd, x, y] = expanded_euclid(b, a % b);
+    auto [gcd, x, y] = extended_euclid(b, a % b);
     int64_t new_x{ y };
     int64_t new_y{ x - (a / b) * y };
 
@@ -63,7 +63,7 @@ solve(const Machine& machine) -> int64_t {
 
         // Start by computing B mod a1' = p1 * (b1)^(-1) mod a1', where a1' = a1 / gcd(a1,b1)
         const auto a1_prime{ machine.a_vals[0] / gcd_euclid(machine.a_vals[0], machine.b_vals[0]) };
-        const auto [_gcd, b1_inv, _a1pinv] = expanded_euclid(machine.b_vals[0], a1_prime);
+        const auto [_gcd, b1_inv, _a1pinv] = extended_euclid(machine.b_vals[0], a1_prime);
         auto b_mod{ (machine.p_vals[0] * b1_inv) % a1_prime };
         if (b_mod < 0) {
             b_mod += a1_prime;

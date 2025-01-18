@@ -17,7 +17,7 @@ func isOOB(row, col, nRows, nCols int) bool {
 func exploreRegion(row, col int, grid []string, visited [][]bool) (int, int) {
 	queue := [][2]int{{row, col}}
 	nRows, nCols := len(grid), len(grid[0])
-	regionType := grid[row][col]
+	rType := grid[row][col]
 	visited[row][col] = true
 
 	area, perimeter := 0, 0
@@ -28,19 +28,14 @@ func exploreRegion(row, col int, grid []string, visited [][]bool) (int, int) {
 
 		for _, nOffset := range neighborOffsets {
 			row, col := current[0]+nOffset[0], current[1]+nOffset[1]
-			if isOOB(row, col, nRows, nCols) {
+			if isOOB(row, col, nRows, nCols) || grid[row][col] != rType {
 				perimeter += 1
 				continue
 			}
-			if grid[row][col] != regionType {
-				perimeter += 1
-				continue
+			if !visited[row][col] {
+				queue = append(queue, [2]int{row, col})
+				visited[row][col] = true
 			}
-			if visited[row][col] {
-				continue
-			}
-			queue = append(queue, [2]int{row, col})
-			visited[row][col] = true
 		}
 	}
 	return area, perimeter
@@ -49,7 +44,7 @@ func exploreRegion(row, col int, grid []string, visited [][]bool) (int, int) {
 func exploreRegionB(row, col int, grid []string, visited [][]bool) (int, int) {
 	queue := [][2]int{{row, col}}
 	nRows, nCols := len(grid), len(grid[0])
-	regionType := grid[row][col]
+	rType := grid[row][col]
 	visited[row][col] = true
 
 	area, sides := 0, 0
@@ -60,13 +55,18 @@ func exploreRegionB(row, col int, grid []string, visited [][]bool) (int, int) {
 
 		surrounding := [3][3]bool{}
 		for _, offset := range surroundOffsets {
-			var isSame bool
-			if isOOB(current[0]+offset[0], current[1]+offset[1], nRows, nCols) {
-				isSame = false
-			} else {
-				isSame = grid[current[0]+offset[0]][current[1]+offset[1]] == regionType
+			row, col := current[0]+offset[0], current[1]+offset[1]
+			if isOOB(row, col, nRows, nCols) {
+				continue
 			}
-			surrounding[offset[0]+1][offset[1]+1] = isSame
+
+			surrounding[offset[0]+1][offset[1]+1] = grid[row][col] == rType
+
+			// Add unvisited neighbor to queue
+			if (grid[row][col] == rType) && (offset[0] == 0 || offset[1] == 0) && !visited[row][col] {
+				queue = append(queue, [2]int{row, col})
+				visited[row][col] = true
+			}
 		}
 
 		for _, corner := range corners {
@@ -79,14 +79,6 @@ func exploreRegionB(row, col int, grid []string, visited [][]bool) (int, int) {
 			if surrounding[corner[0]][1] && surrounding[1][corner[1]] && !surrounding[corner[0]][corner[1]] {
 				sides += 1
 			}
-		}
-		for _, nOffset := range neighborOffsets {
-			row, col := current[0]+nOffset[0], current[1]+nOffset[1]
-			if isOOB(row, col, nRows, nCols) || grid[row][col] != regionType || visited[row][col] {
-				continue
-			}
-			queue = append(queue, [2]int{row, col})
-			visited[row][col] = true
 		}
 	}
 	return area, sides
