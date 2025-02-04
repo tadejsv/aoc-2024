@@ -1,8 +1,3 @@
-from collections import deque
-
-import numpy as np
-
-
 def num_digits(num: int) -> int:
     digits = 0
     while num > 0:
