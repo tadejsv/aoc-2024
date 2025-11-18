@@ -59,7 +59,7 @@ solve(const Machine& machine) -> int64_t {
         }
 
         // Situation with many possible solutions, need to pick one with min A or min B, depending
-        // on the ration between their cost and "productivity"
+        // on the ratio between their cost and "productivity"
 
         // Start by computing B mod a1' = p1 * (b1)^(-1) mod a1', where a1' = a1 / gcd(a1,b1)
         const auto a1_prime{ machine.a_vals[0] / gcd_euclid(machine.a_vals[0], machine.b_vals[0]) };

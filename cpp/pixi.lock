@@ -18,6 +18,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-tools-19.1.5-default_hb5137d0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/clangxx-19.1.5-default_ha78316a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cmake-3.31.1-hf9cb763_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/hyperfine-1.19.0-hdab8a38_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/include-what-you-use-0.23-h5888daf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/kernel-headers_linux-64-3.10.0-he073ed8_18.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/keyutils-1.6.1-h166bdaf_0.tar.bz2
@@ -229,6 +230,18 @@ packages:
   license_family: BSD
   size: 20398710
   timestamp: 1732228541763
+- conda: https://conda.anaconda.org/conda-forge/linux-64/hyperfine-1.19.0-hdab8a38_2.conda
+  sha256: 372043fb8e6989150b0c7b252e7bdc95b492d454de1fb13ffd26b64a670b41da
+  md5: fc87f6790f38fa76821debb952ef89b8
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=14
+  constrains:
+  - __glibc >=2.17
+  license: MIT
+  license_family: MIT
+  size: 564920
+  timestamp: 1761225568737
 - conda: https://conda.anaconda.org/conda-forge/linux-64/include-what-you-use-0.23-h5888daf_0.conda
   sha256: e25a046a0ce74fb19e9d8cfba10ca6e67973ebb33c1fca12aa0dcfe3d70759a6
   md5: a9ae9bf0495a03e6a36352028fb1aa99
@@ -333,8 +346,6 @@ packages:
   - libgcc >=14
   constrains:
   - sysroot_linux-64 >=2.17
-  arch: x86_64
-  platform: linux
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
   size: 1021943
@@ -345,8 +356,6 @@ packages:
   depends:
   - libcxx >=19.1.5
   - tzdata
-  arch: x86_64
-  platform: linux
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
   size: 824424
@@ -359,8 +368,6 @@ packages:
   - libgcc >=14
   constrains:
   - libcxx 19.1.5.*
-  arch: x86_64
-  platform: linux
   license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
   size: 159533
