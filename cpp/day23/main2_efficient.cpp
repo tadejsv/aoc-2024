@@ -1,90 +1,116 @@
-#include <algorithm>
 #include <cstddef>
+#include <cstdint>
+#include <Eigen/Dense>
 #include <print>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "utils/utils.h"
 
-using NodesSet = std::unordered_set<std::string>;
-using Neighbors = std::unordered_map<std::string, NodesSet>;
+using AdjMatrix = Eigen::Matrix<uint8_t, Eigen::Dynamic, Eigen::Dynamic>;
+using Node = int32_t;
+using Clique = std::vector<Node>;
 
-template <typename T>
-auto
-set_intersection(const std::unordered_set<T>& a, const std::unordered_set<T>& b)
-    -> std::unordered_set<T> {
-    std::unordered_set<T> intersection{};
-    if (a.size() < b.size()) {
-        for (const auto& el_a : a) {
-            if (b.contains(el_a)) {
-                intersection.insert(el_a);
-            }
+void
+get_clique(const AdjMatrix& adj, const Clique& initial, const Clique& candidates, Clique& best) {
+    // If no candidates left, initial is a maximal clique
+    if (candidates.empty()) {
+        if (initial.size() > best.size()) {
+            best = initial;
         }
-    } else {
-        for (const auto& el_b : b) {
-            if (a.contains(el_b)) {
-                intersection.insert(el_b);
-            }
-        }
+        return;
     }
 
-    return intersection;
-};
+    // Very simple branch-and-bound (optional but helps a lot)
+    if (initial.size() + candidates.size() <= best.size()) {
+        return;
+    }
 
-auto
-get_clique(const NodesSet& initial, const Neighbors& neighbors, const NodesSet& candidates)
-    -> NodesSet {
-    NodesSet max_clique{ initial };
-    NodesSet unseen_candidates{ candidates };
-    for (const auto& candidate : candidates) {
-        const auto& cn = neighbors.at(candidate);
-        const auto new_candidates = set_intersection(cn, unseen_candidates);
-        unseen_candidates.erase(candidate);
+    // We mimic your "unseen_candidates" by only looking at
+    // candidates after the current index.
+    for (std::size_t i = 0; i < candidates.size(); ++i) {
+        Node v = candidates[i];
 
-        auto new_initial{ initial };
-        new_initial.insert(candidate);
-        if (!new_candidates.empty()) {
-            auto clique = get_clique(new_initial, neighbors, new_candidates);
-            if (clique.size() > max_clique.size()) {
-                max_clique = std::move(clique);
-            }
-        } else {
-            if (new_initial.size() > max_clique.size()) {
-                max_clique = std::move(new_initial);
+        // New clique = initial ∪ {v}
+        Clique new_clique = initial;
+        new_clique.push_back(v);
+
+        // New candidates = neighbors(v) ∩ {candidates after i}
+        Clique new_candidates;
+        new_candidates.reserve(candidates.size() - i - 1);
+
+        for (std::size_t j = i + 1; j < candidates.size(); ++j) {
+            Node u = candidates[j];
+            if (adj(v, u) != 0) {
+                new_candidates.push_back(u);
             }
         }
+
+        get_clique(adj, new_clique, new_candidates, best);
     }
-    return max_clique;
 }
 
 int
 main() {  // NOLINT
     const auto& lines{ utils::read_lines_from_file("day23.txt") };
 
-    Neighbors neighbors{};
+    std::unordered_map<std::string, int32_t> nodes_id{};
+    auto get_id = [&](const std::string& name) {
+        if (nodes_id.contains(name)) {
+            return nodes_id[name];
+        }
+
+        const auto new_id{ static_cast<int32_t>(nodes_id.size()) };
+        nodes_id[name] = new_id;
+        return new_id;
+    };
+
+
+    std::vector<std::pair<int32_t, int32_t>> edges{};
+    edges.reserve(lines.size());
     for (const auto& line : lines) {
         const auto parts = utils::split_string(line, "-");
-        neighbors[parts[0]].insert(parts[1]);
-        neighbors[parts[1]].insert(parts[0]);
+        const std::string& node1{ parts[0] };
+        const std::string& node2{ parts[1] };
+
+        edges.emplace_back(get_id(node1), get_id(node2));
+    }
+    const int32_t num_nodes{ static_cast<int32_t>(nodes_id.size()) };
+
+    std::vector<std::string> nodes_vec{};
+    nodes_vec.resize(nodes_id.size());
+    for (const auto& [name, id] : nodes_id) {
+        nodes_vec[id] = name;
     }
 
-    NodesSet nodes{};
-    for (const auto& item : neighbors) {
-        nodes.insert(item.first);
+    AdjMatrix adj{ AdjMatrix::Zero(num_nodes, num_nodes) };
+    for (const auto [node1, node2] : edges) {
+        adj(node1, node2) = 1;
+        adj(node2, node1) = 1;
     }
-    const auto max_clique = get_clique({}, neighbors, nodes);
-    std::vector<std::string> max_clique_vec(max_clique.begin(), max_clique.end());
-    std::ranges::sort(max_clique_vec);
+
+    Clique initial;
+    Clique candidates;
+    candidates.reserve(num_nodes);
+    for (Node i = 0; i < num_nodes; ++i) {
+        candidates.push_back(i);
+    }
+
+    Clique best;
+    get_clique(adj, initial, candidates, best);
+
+    std::vector<std::string> best_nodes{};
+    for (Node n : best) {
+        best_nodes.push_back(nodes_vec[n]);
+    }
+    std::ranges::sort(best_nodes);
 
     std::string joined;
-    for (std::size_t i = 0; i < max_clique_vec.size(); ++i) {
-        if (i > 0) {
-            joined += ",";
-        }
-        joined += max_clique_vec[i];
+    for (const auto& node : best_nodes) {
+        joined += ",";
+        joined += node;
     }
-    std::println("{}", joined);
+    std::println("{}, {}", joined.substr(1, joined.size()), best_nodes.size());
 }

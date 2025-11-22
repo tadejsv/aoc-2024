@@ -1,5 +1,4 @@
 add_executable(Day24 main.cpp)
-# add_executable(Day24 main2.cpp)
 
 target_link_libraries(Day24 PUBLIC compiler_flags utils)
 

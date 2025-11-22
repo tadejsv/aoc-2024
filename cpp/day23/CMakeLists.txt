@@ -1,5 +1,6 @@
 # add_executable(Day23 main.cpp)
-add_executable(Day23 main2.cpp)
+# add_executable(Day23 main2.cpp)
+add_executable(Day23 main2_efficient.cpp)
 
 target_link_libraries(Day23 PUBLIC compiler_flags utils Eigen3::Eigen)
 
