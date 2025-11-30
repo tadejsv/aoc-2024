@@ -57,8 +57,6 @@ func (pq *priorityQueue) Pop() any {
 	return item
 }
 
-// dfs now returns ONLY [][]int of distances.
-// -1 means wall or unreachable.
 func dfs(grid [][]bool, startPos position) [][]int {
 	h := len(grid)
 	if h == 0 {

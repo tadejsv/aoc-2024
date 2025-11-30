@@ -1,9 +1,9 @@
 package main
 
 import (
-	day20 "github.com/tadejsv/aoc-2024/day20"
+	"github.com/tadejsv/aoc-2024/day21"
 )
 
 func main() {
-	day20.Day20b()
+	day21.Day21b()
 }
